@@ -6,6 +6,18 @@ This repository now contains a full-stack LaunchPad setup that combines the mark
 
 ## 🚀 Getting started
 
+### Prerequisites
+
+- **Node.js 20+** (required)
+- **Yarn 4+** (required)
+
+You can use [nvm](https://github.com/nvm-sh/nvm) to manage Node versions:
+```bash
+nvm use
+```
+
+### Installation
+
 1. **Clone the repository**
 
    ```bash

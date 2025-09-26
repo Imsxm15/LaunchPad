@@ -9,6 +9,9 @@
   ],
   "scripts": {
     "prepare": "husky",
+    "predev": "node --loader ts-node/esm scripts/check-node-version.mts",
+    "prebuild": "node --loader ts-node/esm scripts/check-node-version.mts",
+    "prestart": "node --loader ts-node/esm scripts/check-node-version.mts",
     "dev": "concurrently \"yarn dev:next\" \"yarn dev:medusa\" --names \"next,medusa\" --prefix-colors \"blue,green\"",
     "dev:next": "yarn workspace nextjs dev",
     "dev:medusa": "yarn workspace medusa-starter-default dev",
@@ -45,6 +48,10 @@
     "apps/next/**/*.{js,jsx,ts,tsx}": [
       "cd apps/next && yarn lint --fix"
     ]
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "yarn": ">=4.0.0"
   },
   "packageManager": "yarn@4.5.0"
 }
