@@ -11,12 +11,13 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
   const { state } = useSlugContext();
   const { localizedSlugs } = state;
 
-  const pathname = usePathname(); // Current path
-  const segments = pathname.split('/'); // Split path into segments
+  const pathname = usePathname();
 
   // Generate localized path for each locale
   const generateLocalizedPath = (locale: string): string => {
     if (!pathname) return `/${locale}`; // Default to root path for the locale
+
+    const segments = pathname.split('/');
 
     // Handle homepage (e.g., "/en" -> "/fr")
     if (segments.length <= 2) {

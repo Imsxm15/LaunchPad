@@ -50,13 +50,19 @@ export default async function Blog(props: {
     false
   );
 
-  const localizedSlugs = blogPage.localizations?.reduce(
+  const localizedSlugs = (blogPage?.localizations ?? []).reduce(
     (acc: Record<string, string>, localization: any) => {
-      acc[localization.locale] = 'blog';
+      if (localization?.locale) {
+        acc[localization.locale] = 'blog';
+      }
       return acc;
     },
-    { [params.locale]: 'blog' }
+    { [params.locale]: 'blog' } as Record<string, string>
   );
+  const heading = blogPage?.heading ?? 'Blog';
+  const subheading =
+    blogPage?.sub_heading ?? 'Stay up to date with the latest stories.';
+  const articlesData = Array.isArray(articles?.data) ? articles.data : [];
 
   return (
     <div className="relative overflow-hidden py-20 md:py-0">
@@ -68,14 +74,14 @@ export default async function Blog(props: {
             <IconClipboardText className="h-6 w-6 text-white" />
           </FeatureIconContainer>
           <Heading as="h1" className="mt-4">
-            {blogPage.heading}
+            {heading}
           </Heading>
           <Subheading className="max-w-3xl mx-auto">
-            {blogPage.sub_heading}
+            {subheading}
           </Subheading>
         </div>
 
-        {articles.data.slice(0, 1).map((article: Article) => (
+        {articlesData.slice(0, 1).map((article: Article) => (
           <BlogCard
             article={article}
             locale={params.locale}
@@ -83,7 +89,7 @@ export default async function Blog(props: {
           />
         ))}
 
-        <BlogPostRows articles={articles.data} />
+        <BlogPostRows articles={articlesData} locale={params.locale} />
       </Container>
     </div>
   );

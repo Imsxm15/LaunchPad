@@ -43,12 +43,14 @@ export default async function HomePage(props: {
     true
   );
 
-  const localizedSlugs = pageData.localizations?.reduce(
+  const localizedSlugs = (pageData?.localizations ?? []).reduce(
     (acc: Record<string, string>, localization: any) => {
-      acc[localization.locale] = '';
+      if (localization?.locale) {
+        acc[localization.locale] = '';
+      }
       return acc;
     },
-    { [params.locale]: '' }
+    { [params.locale]: '' } as Record<string, string>
   );
 
   return (

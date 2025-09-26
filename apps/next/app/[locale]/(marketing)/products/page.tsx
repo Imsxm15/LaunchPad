@@ -50,13 +50,18 @@ export default async function Products(props: {
   );
   const products = await fetchMedusaProducts();
 
-  const localizedSlugs = productPage.localizations?.reduce(
+  const localizedSlugs = (productPage?.localizations ?? []).reduce(
     (acc: Record<string, string>, localization: any) => {
-      acc[localization.locale] = 'products';
+      if (localization?.locale) {
+        acc[localization.locale] = 'products';
+      }
       return acc;
     },
-    { [params.locale]: 'products' }
+    { [params.locale]: 'products' } as Record<string, string>
   );
+  const heading = productPage?.heading ?? 'Products';
+  const subheading =
+    productPage?.sub_heading ?? 'Discover our latest product selection.';
   const featured = products.slice(0, 3);
 
   return (
@@ -68,10 +73,10 @@ export default async function Products(props: {
           <IconShoppingCartUp className="h-6 w-6 text-white" />
         </FeatureIconContainer>
         <Heading as="h1" className="pt-4">
-          {productPage.heading}
+          {heading}
         </Heading>
         <Subheading className="max-w-3xl mx-auto">
-          {productPage.sub_heading}
+          {subheading}
         </Subheading>
         <Featured products={featured} locale={params.locale} />
         <ProductItems products={products} locale={params.locale} />
