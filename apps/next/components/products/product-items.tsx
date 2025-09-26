@@ -42,6 +42,8 @@ const ProductItem = ({
   product: Product;
   locale: string;
 }) => {
+  const currencySymbol =
+    product.currency_code?.toUpperCase() === 'EUR' ? '€' : '$';
   return (
     <Link
       href={`/${locale}/products/${product.slug}` as never}
@@ -65,7 +67,8 @@ const ProductItem = ({
             {product.name}
           </span>
           <span className="bg-white text-black shadow-derek text-xs px-2 py-1 rounded-full">
-            ${formatNumber(product.price)}
+            {currencySymbol}
+            {formatNumber(product.price)}
           </span>
         </div>
         <p className="text-neutral-400 text-sm mt-4">
