@@ -1,5 +1,6 @@
 import qs from 'qs';
 
+import { getMedusaBaseUrl } from './config';
 import { Product } from '@/types/types';
 
 interface MedusaPrice {
@@ -61,14 +62,6 @@ const DEFAULT_EXPAND = [
 ].join(',');
 
 const DEFAULT_LIMIT = 50;
-
-function getMedusaBaseUrl(): string {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_MEDUSA_URL ??
-    process.env.NEXT_PUBLIC_API_URL ??
-    'http://localhost:9000';
-  return baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-}
 
 async function medusaFetch<T>(path: string): Promise<T | null> {
   const baseUrl = getMedusaBaseUrl();

@@ -5,6 +5,7 @@ import React from 'react';
 
 import { Footer } from '@/components/footer';
 import { Navbar } from '@/components/navbar';
+import { AuthProvider } from '@/context/auth-context';
 import { CartProvider } from '@/context/cart-context';
 import fetchContentType from '@/lib/cms/fetchContentType';
 import { generateMetadataObject } from '@/lib/shared/metadata';
@@ -52,18 +53,20 @@ export default async function LocaleLayout(props: {
   );
   return (
     <ViewTransitions>
-      <CartProvider>
-        <div
-          className={cn(
-            inter.className,
-            'bg-charcoal antialiased h-full w-full'
-          )}
-        >
-          <Navbar data={pageData.navbar} locale={locale} />
-          {children}
-          <Footer data={pageData.footer} locale={locale} />
-        </div>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <div
+            className={cn(
+              inter.className,
+              'bg-charcoal antialiased h-full w-full'
+            )}
+          >
+            <Navbar data={pageData.navbar} locale={locale} />
+            {children}
+            <Footer data={pageData.footer} locale={locale} />
+          </div>
+        </CartProvider>
+      </AuthProvider>
     </ViewTransitions>
   );
 }

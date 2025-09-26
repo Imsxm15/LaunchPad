@@ -1,14 +1,16 @@
 'use client';
 
 import { useMotionValueEvent, useScroll } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { Link } from 'next-view-transitions';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { IoIosMenu } from 'react-icons/io';
 import { IoIosClose } from 'react-icons/io';
 
 import { LocaleSwitcher } from '../locale-switcher';
 import { Button } from '@/components/elements/button';
 import { Logo } from '@/components/logo';
+import { useAuth } from '@/context/auth-context';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -37,6 +39,34 @@ export const MobileNavbar = ({
   const { scrollY } = useScroll();
 
   const [showBackground, setShowBackground] = useState(false);
+  const router = useRouter();
+  const { customer, logout } = useAuth();
+
+  const displayName = useMemo(() => {
+    if (!customer) {
+      return '';
+    }
+
+    const fullName = `${customer.first_name ?? ''} ${customer.last_name ?? ''}`
+      .trim()
+      .replace(/\s+/g, ' ');
+
+    return fullName.length ? fullName : customer.email;
+  }, [customer]);
+
+  const secondaryLine = useMemo(() => {
+    if (!customer?.email) {
+      return '';
+    }
+
+    return displayName !== customer.email ? customer.email : '';
+  }, [customer, displayName]);
+
+  const handleLogout = async () => {
+    await logout();
+    setOpen(false);
+    router.push(`/${locale}`);
+  };
 
   useMotionValueEvent(scrollY, 'change', (value) => {
     if (value > 100) {
@@ -56,10 +86,17 @@ export const MobileNavbar = ({
     >
       <Logo image={logo?.image} />
 
-      <IoIosMenu
-        className="text-white h-6 w-6"
-        onClick={() => setOpen(!open)}
-      />
+      <div className="flex items-center gap-2">
+        {customer ? (
+          <span className="text-xs font-semibold text-white leading-tight">
+            {displayName}
+          </span>
+        ) : null}
+        <IoIosMenu
+          className="text-white h-6 w-6"
+          onClick={() => setOpen(!open)}
+        />
+      </div>
 
       {open && (
         <div className="fixed inset-0 bg-black z-50 flex flex-col items-start justify-start space-y-10  pt-5  text-xl text-zinc-600  transition duration-200 hover:text-zinc-800">
@@ -106,19 +143,42 @@ export const MobileNavbar = ({
               </>
             ))}
           </div>
-          <div className="flex flex-row w-full items-start gap-2.5  px-8 py-4 ">
-            {rightNavbarItems.map((item, index) => (
-              <Button
-                key={item.text}
-                variant={
-                  index === rightNavbarItems.length - 1 ? 'primary' : 'simple'
-                }
-                as={Link}
-                href={`/${locale}${item.URL}`}
-              >
-                {item.text}
-              </Button>
-            ))}
+          <div className="flex flex-col w-full gap-4 px-8 py-4">
+            {customer ? (
+              <div className="flex flex-col gap-3 text-white">
+                <div className="flex flex-col">
+                  <span className="text-lg font-semibold leading-tight">
+                    {displayName}
+                  </span>
+                  {secondaryLine ? (
+                    <span className="text-sm text-neutral-400 leading-tight">
+                      {secondaryLine}
+                    </span>
+                  ) : null}
+                </div>
+                <Button variant="simple" onClick={handleLogout} className="w-fit">
+                  Se déconnecter
+                </Button>
+              </div>
+            ) : (
+              <div className="flex flex-row items-start gap-2.5">
+                {rightNavbarItems.map((item, index) => (
+                  <Button
+                    key={item.text}
+                    variant={
+                      index === rightNavbarItems.length - 1
+                        ? 'primary'
+                        : 'simple'
+                    }
+                    as={Link}
+                    href={`/${locale}${item.URL}`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.text}
+                  </Button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
