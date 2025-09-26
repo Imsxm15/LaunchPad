@@ -1072,16 +1072,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@strapi/blocks-react-renderer@npm:^1.0.1":
-  version: 1.0.2
-  resolution: "@strapi/blocks-react-renderer@npm:1.0.2"
-  peerDependencies:
-    react: ^18.0.0 || ^19.0.0
-    react-dom: ^18.0.0 || ^19.0.0
-  checksum: 10c0/4fa75836cfde327da5665336e22d475949757df85ab3680ca0c8eb77b1d46fc5e9f75b420554a397c478608de52d109a259e99242b8282313ebc70fd82dafe79
-  languageName: node
-  linkType: hard
-
 "@swc/helpers@npm:0.5.15":
   version: 0.5.15
   resolution: "@swc/helpers@npm:0.5.15"
@@ -4927,7 +4917,6 @@ __metadata:
     "@mapbox/rehype-prism": "npm:^0.9.0"
     "@react-three/drei": "npm:^9.109.2"
     "@react-three/fiber": "npm:^9.3.0"
-    "@strapi/blocks-react-renderer": "npm:^1.0.1"
     "@tabler/icons-react": "npm:^3.11.0"
     "@tailwindcss/typography": "npm:^0.5.13"
     "@tsparticles/engine": "npm:^3.5.0"

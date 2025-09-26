@@ -1,7 +1,6 @@
 'use client';
 
 import { IconTrash } from '@tabler/icons-react';
-import Image from 'next/image';
 import React from 'react';
 
 import {
@@ -11,7 +10,7 @@ import {
   ModalFooter,
   ModalTrigger,
 } from '../ui/animated-modal';
-import { StrapiImage } from '@/components/ui/strapi-image';
+import { MediaImage } from '@/components/ui/media-image';
 import { useCart } from '@/context/cart-context';
 import { formatNumber } from '@/lib/utils';
 
@@ -40,7 +39,7 @@ export default function AddToCartModal({ onClick }: { onClick: () => void }) {
                 className="flex gap-2 justify-between items-center py-4"
               >
                 <div className="flex items-center gap-4">
-                  <StrapiImage
+                  <MediaImage
                     src={item.product?.images?.[0].url}
                     alt={item.product.name}
                     width={60}

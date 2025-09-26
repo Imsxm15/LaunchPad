@@ -14,9 +14,9 @@ export const Preview = () => {
         return;
       }
 
-      if (data.type === 'strapiUpdate') {
+      if (data.type === 'cmsUpdate') {
         router.refresh();
-      } else if (data.type === 'strapiScript') {
+      } else if (data.type === 'cmsScript') {
         const script = window.document.createElement('script');
         script.textContent = data.payload.script;
         window.document.head.appendChild(script);
@@ -26,8 +26,8 @@ export const Preview = () => {
     // Add the event listener
     window.addEventListener('message', handleMessage);
 
-    // Let Strapi know we're ready to receive the script
-    window.parent?.postMessage({ type: 'previewReady' }, '*');
+    // Notify the parent frame that the preview is ready to receive updates
+    window.parent?.postMessage({ type: 'cmsPreviewReady' }, '*');
 
     // Remove the event listener on unmount
     return () => {

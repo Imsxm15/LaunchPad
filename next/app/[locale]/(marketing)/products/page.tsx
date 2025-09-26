@@ -9,8 +9,8 @@ import { Heading } from '@/components/elements/heading';
 import { Subheading } from '@/components/elements/subheading';
 import { Featured } from '@/components/products/featured';
 import { ProductItems } from '@/components/products/product-items';
+import fetchContentType from '@/lib/cms/fetchContentType';
 import { generateMetadataObject } from '@/lib/shared/metadata';
-import fetchContentType from '@/lib/strapi/fetchContentType';
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;

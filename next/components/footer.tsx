@@ -21,21 +21,14 @@ export const Footer = async ({
             <div className="max-w-xs">{data?.description}</div>
             <div className="mt-4">{data?.copyright}</div>
             <div className="mt-10">
-              Designed and Developed by{' '}
+              Designed and developed by{' '}
               <a className="text-white underline" href="https://aceternity.com">
                 Aceternity
               </a>{' '}
-              &{' '}
-              <a className="text-white underline" href="https://strapi.io">
-                Strapi
-              </a>
+              & the LaunchPad team
             </div>
             <div className="mt-2">
               built with{' '}
-              <a className="text-white underline" href="https://strapi.io">
-                Strapi
-              </a>
-              ,{' '}
               <a className="text-white underline" href="https://nextjs.org">
                 Next.js
               </a>

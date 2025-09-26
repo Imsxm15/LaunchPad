@@ -1,4 +1,4 @@
-import { strapiImage } from '../strapi/strapiImage';
+import { resolveMediaUrl } from '../cms/media';
 
 export function generateMetadataObject(seo: any) {
   return {
@@ -8,7 +8,9 @@ export function generateMetadataObject(seo: any) {
       title: seo?.ogTitle || seo?.metaTitle || 'Default OG Title',
       description:
         seo?.ogDescription || seo?.metaDescription || 'Default OG Description',
-      images: seo?.metaImage ? [{ url: strapiImage(seo?.metaImage.url) }] : [],
+      images: seo?.metaImage
+        ? [{ url: resolveMediaUrl(seo?.metaImage.url) }]
+        : [],
     },
     twitter: {
       card: seo?.twitterCard || 'summary_large_image',

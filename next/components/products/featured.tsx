@@ -1,7 +1,7 @@
 import { Link } from 'next-view-transitions';
 import React from 'react';
 
-import { StrapiImage } from '@/components/ui/strapi-image';
+import { MediaImage } from '@/components/ui/media-image';
 import { formatNumber } from '@/lib/utils';
 import { Product } from '@/types/types';
 
@@ -53,7 +53,7 @@ const FeaturedItem = ({
           ${formatNumber(product.price)}
         </span>
       </div>
-      <StrapiImage
+      <MediaImage
         src={product.images?.[0].url}
         alt={product.name}
         width={1000}

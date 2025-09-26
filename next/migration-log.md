@@ -53,15 +53,15 @@ This document details the migration from Next.js 14 to Next.js 15.5.0 and React 
   const id = `circle-line-${index}`;
   ```
 
-### Strapi API Error Handling
+### CMS API Error Handling
 
-**File**: `lib/strapi/fetchContentType.ts`
+**File**: `lib/cms/fetchContentType.ts`
 
 - **Issue**: 400 errors crashing the application
 - **Solution**: Added graceful error handling with fallback data:
   ```tsx
   if (!response.ok) {
-    console.error(`Failed to fetch data from Strapi (url=${url.toString()}, status=${response.status})`);
+    console.error(`Failed to fetch data from API (endpoint=${endpoint}, status=${response.status})`);
     return spreadData ? null : { data: [] };
   }
   ```

@@ -6,8 +6,8 @@ import React from 'react';
 import { Footer } from '@/components/footer';
 import { Navbar } from '@/components/navbar';
 import { CartProvider } from '@/context/cart-context';
+import fetchContentType from '@/lib/cms/fetchContentType';
 import { generateMetadataObject } from '@/lib/shared/metadata';
-import fetchContentType from '@/lib/strapi/fetchContentType';
 import { cn } from '@/lib/utils';
 
 const inter = Inter({
