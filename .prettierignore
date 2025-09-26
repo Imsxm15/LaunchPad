@@ -13,8 +13,8 @@ out/
 coverage/
 
 # Next.js specific
-next/.next/
-next/out/
+apps/next/.next/
+apps/next/out/
 
 # Logs
 *.log
