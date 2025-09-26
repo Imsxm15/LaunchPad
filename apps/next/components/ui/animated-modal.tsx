@@ -46,19 +46,25 @@ export const ModalTrigger = ({
   children,
   className,
   onClick,
+  disabled,
 }: {
   children: ReactNode;
   className?: string;
   onClick?: () => void;
+  disabled?: boolean;
 }) => {
   const { setOpen } = useModal();
   return (
     <Button
       onClick={() => {
+        if (disabled) {
+          return;
+        }
         setOpen(true);
         onClick?.();
       }}
       className={className}
+      disabled={disabled}
     >
       {children}
     </Button>
