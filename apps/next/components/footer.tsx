@@ -70,18 +70,35 @@ const LinkSection = ({
   links,
   locale,
 }: {
-  links: { text: string; URL: never | string }[];
+  links?: { text?: string; URL?: string | null }[];
   locale: string;
-}) => (
-  <div className="flex justify-center space-y-4 flex-col mt-4">
-    {links.map((link) => (
-      <Link
-        key={link.text}
-        className="transition-colors hover:text-neutral-400 text-muted text-xs sm:text-sm"
-        href={`${link.URL.startsWith('http') ? '' : `/${locale}`}${link.URL}`}
-      >
-        {link.text}
-      </Link>
-    ))}
-  </div>
-);
+}) => {
+  if (!Array.isArray(links) || !links.length) {
+    return null;
+  }
+
+  return (
+    <div className="flex justify-center space-y-4 flex-col mt-4">
+      {links.map((link) => {
+        if (!link?.text || !link?.URL) {
+          return null;
+        }
+
+        const url = link.URL;
+        const isExternal = /^https?:\/\//.test(url);
+        const normalizedPath = url.startsWith('/') ? url : `/${url}`;
+        const href = isExternal ? url : `/${locale}${normalizedPath}`;
+
+        return (
+          <Link
+            key={link.text}
+            className="transition-colors hover:text-neutral-400 text-muted text-xs sm:text-sm"
+            href={href}
+          >
+            {link.text}
+          </Link>
+        );
+      })}
+    </div>
+  );
+};

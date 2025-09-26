@@ -8,24 +8,41 @@ const nextConfig = {
   },
   pageExtensions: ['ts', 'tsx'],
   async redirects() {
-    let redirections = [];
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    if (!baseUrl) {
+      return [];
+    }
+
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/redirections`
-      );
+      const url = new URL('/api/redirections', baseUrl);
+      const res = await fetch(url.href);
+
+      if (!res.ok) {
+        console.warn(
+          `Failed to load redirects from ${url.href}. Status: ${res.status}`
+        );
+        return [];
+      }
+
       const result = await res.json();
-      const redirectItems = result.data.map(({ source, destination }) => {
-        return {
+      if (!Array.isArray(result?.data)) {
+        return [];
+      }
+
+      return result.data
+        .filter(
+          (item) =>
+            typeof item?.source === 'string' &&
+            typeof item?.destination === 'string'
+        )
+        .map(({ source, destination }) => ({
           source: `/:locale${source}`,
           destination: `/:locale${destination}`,
           permanent: false,
-        };
-      });
-
-      redirections = redirections.concat(redirectItems);
-
-      return redirections;
+        }));
     } catch (error) {
+      console.warn('Redirect configuration failed', error);
       return [];
     }
   },

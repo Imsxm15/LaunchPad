@@ -24,12 +24,14 @@ export default async function SingleArticlePage(props: {
     return <div>Blog not found</div>;
   }
 
-  const localizedSlugs = article.localizations?.reduce(
+  const localizedSlugs = (article.localizations ?? []).reduce(
     (acc: Record<string, string>, localization: any) => {
-      acc[localization.locale] = localization.slug;
+      if (localization?.locale) {
+        acc[localization.locale] = localization.slug ?? params.slug;
+      }
       return acc;
     },
-    { [params.locale]: params.slug }
+    { [params.locale]: params.slug } as Record<string, string>
   );
 
   return (

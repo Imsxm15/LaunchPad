@@ -3,24 +3,42 @@
 import { format } from 'date-fns';
 import FuzzySearch from 'fuzzy-search';
 import { Link } from 'next-view-transitions';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { truncate } from '@/lib/utils';
 import { Article } from '@/types/types';
 
-export const BlogPostRows = ({ articles }: { articles: Article[] }) => {
+export const BlogPostRows = ({
+  articles,
+  locale,
+}: {
+  articles: Article[];
+  locale: string;
+}) => {
   const [search, setSearch] = useState('');
 
-  const searcher = new FuzzySearch(articles, ['title'], {
-    caseSensitive: false,
-  });
+  const safeArticles = useMemo(
+    () => (Array.isArray(articles) ? articles : []),
+    [articles]
+  );
 
-  const [results, setResults] = useState(articles);
+  const searcher = useMemo(
+    () =>
+      new FuzzySearch(safeArticles, ['title'], {
+        caseSensitive: false,
+      }),
+    [safeArticles]
+  );
+
+  const [results, setResults] = useState(safeArticles);
+
   useEffect(() => {
-    const results = searcher.search(search);
-    setResults(results);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+    setResults(safeArticles);
+  }, [safeArticles]);
+
+  useEffect(() => {
+    setResults(searcher.search(search));
+  }, [search, searcher]);
 
   return (
     <div className="w-full py-20">
@@ -40,7 +58,11 @@ export const BlogPostRows = ({ articles }: { articles: Article[] }) => {
           <p className="text-neutral-400 text-center p-4">No results found</p>
         ) : (
           results.map((article, index) => (
-            <BlogPostRow article={article} key={article.slug + index} />
+            <BlogPostRow
+              article={article}
+              locale={locale}
+              key={article.slug + index}
+            />
           ))
         )}
       </div>
@@ -48,10 +70,16 @@ export const BlogPostRows = ({ articles }: { articles: Article[] }) => {
   );
 };
 
-export const BlogPostRow = ({ article }: { article: Article }) => {
+export const BlogPostRow = ({
+  article,
+  locale,
+}: {
+  article: Article;
+  locale: string;
+}) => {
   return (
     <Link
-      href={`blog/${article.slug}`}
+      href={`/${locale}/blog/${article.slug}`}
       key={`${article.slug}`}
       className="flex md:flex-row flex-col items-start justify-between md:items-center group py-4"
     >

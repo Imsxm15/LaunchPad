@@ -61,9 +61,9 @@ export default async function LocaleLayout(props: {
               'bg-charcoal antialiased h-full w-full'
             )}
           >
-            <Navbar data={pageData.navbar} locale={locale} />
+            <Navbar data={pageData?.navbar} locale={locale} />
             {children}
-            <Footer data={pageData.footer} locale={locale} />
+            <Footer data={pageData?.footer} locale={locale} />
           </div>
         </CartProvider>
       </AuthProvider>
