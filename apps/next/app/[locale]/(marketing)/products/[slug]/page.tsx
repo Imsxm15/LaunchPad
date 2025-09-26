@@ -5,25 +5,31 @@ import { Container } from '@/components/container';
 import { AmbientColor } from '@/components/decorations/ambient-color';
 import DynamicZoneManager from '@/components/dynamic-zone/manager';
 import { SingleProduct } from '@/components/products/single-product';
-import fetchContentType from '@/lib/cms/fetchContentType';
-import { generateMetadataObject } from '@/lib/shared/metadata';
+import { fetchMedusaProductByHandle } from '@/lib/medusa/products';
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const params = await props.params;
 
-  const pageData = await fetchContentType(
-    'products',
-    {
-      filters: { slug: params.slug },
-      populate: 'seo.metaImage',
-    },
-    true
-  );
+  const product = await fetchMedusaProductByHandle(params.slug);
 
-  const seo = pageData?.seo;
-  const metadata = generateMetadataObject(seo);
+  if (!product) {
+    return {};
+  }
+
+  const firstImage = product.images?.[0]?.url;
+
+  const metadata: Metadata = {
+    title: product.name,
+    description: product.description,
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: firstImage ? [{ url: firstImage }] : undefined,
+    },
+  };
+
   return metadata;
 }
 
@@ -32,16 +38,10 @@ export default async function SingleProductPage(props: {
 }) {
   const params = await props.params;
 
-  const product = await fetchContentType(
-    'products',
-    {
-      filters: { slug: params.slug },
-    },
-    true
-  );
+  const product = await fetchMedusaProductByHandle(params.slug);
 
   if (!product) {
-    redirect('/products');
+    redirect(`/${params.locale}/products`);
   }
 
   return (
@@ -49,7 +49,7 @@ export default async function SingleProductPage(props: {
       <AmbientColor />
       <Container className="py-20 md:py-40">
         <SingleProduct product={product} />
-        {product?.dynamic_zone && (
+        {!!product?.dynamic_zone?.length && (
           <DynamicZoneManager
             dynamicZone={product?.dynamic_zone}
             locale={params.locale}

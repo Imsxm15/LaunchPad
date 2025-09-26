@@ -12,10 +12,13 @@ import { cn, formatNumber } from '@/lib/utils';
 import { Product } from '@/types/types';
 
 export const SingleProduct = ({ product }: { product: Product }) => {
-  const [activeThumbnail, setActiveThumbnail] = useState(
-    resolveMediaUrl(product.images[0].url)
+  const initialImage = product.images?.[0]?.url ?? null;
+  const [activeThumbnail, setActiveThumbnail] = useState<string | null>(
+    initialImage ? resolveMediaUrl(initialImage) : null
   );
   const { addToCart } = useCart();
+  const currencySymbol =
+    product.currency_code?.toUpperCase() === 'EUR' ? '€' : '$';
 
   return (
     <div className="bg-gradient-to-b from-neutral-900 to-neutral-950  p-4 md:p-10 rounded-md">
@@ -39,37 +42,42 @@ export const SingleProduct = ({ product }: { product: Product }) => {
               alt={product.name}
               width={600}
               height={600}
-              // fill
               className="rounded-lg object-cover"
             />
           </motion.div>
           {/* </AnimatePresence> */}
           <div className="flex gap-4 justify-center items-center mt-4">
-            {product.images &&
-              product.images.map((image, index) => (
+            {product.images?.map((image, index) => {
+              if (!image?.url) {
+                return null;
+              }
+              const resolvedUrl = resolveMediaUrl(image.url);
+              return (
                 <button
-                  onClick={() => setActiveThumbnail(resolveMediaUrl(image.url))}
-                  key={'product-image' + index}
+                  onClick={() => setActiveThumbnail(resolvedUrl)}
+                  key={`product-image-${index}`}
                   className={cn(
                     'h-20 w-20 rounded-xl',
-                    activeThumbnail === resolveMediaUrl(image.url)
+                    activeThumbnail === resolvedUrl
                       ? 'border-2 border-neutral-200'
                       : 'border-2 border-transparent'
                   )}
                   style={{
-                    backgroundImage: `url(${resolveMediaUrl(image.url)})`,
+                    backgroundImage: `url(${resolvedUrl})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                   }}
                 ></button>
-              ))}
+              );
+            })}
           </div>
         </div>
         <div>
           <h2 className="text-2xl font-semibold mb-4">{product.name}</h2>
           <p className=" mb-6 bg-white text-xs px-4 py-1 rounded-full text-black w-fit">
-            ${formatNumber(product.price)}
+            {currencySymbol}
+            {formatNumber(product.price)}
           </p>
           <p className="text-base font-normal mb-4 text-neutral-400">
             {product.description}

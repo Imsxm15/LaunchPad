@@ -21,15 +21,43 @@ export interface Article {
   categories: Category[];
 }
 
+export interface ProductPlan {
+  id?: string;
+  name: string;
+}
+
+export interface ProductPerk {
+  text: string;
+}
+
+export interface ProductImage {
+  url: string;
+  alternativeText?: string | null;
+}
+
+export interface ProductCategory {
+  id?: string;
+  name: string;
+}
+
+export interface ProductCollection {
+  id?: string;
+  title: string;
+  handle?: string;
+}
+
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   description: string;
   price: number;
-  plans: any[];
-  perks: any[];
+  currency_code?: string;
+  plans: ProductPlan[];
+  perks: ProductPerk[];
   featured?: boolean;
-  images: any[];
-  categories?: any[];
+  images: ProductImage[];
+  categories?: ProductCategory[];
+  collections?: ProductCollection[];
+  dynamic_zone?: any[];
 }

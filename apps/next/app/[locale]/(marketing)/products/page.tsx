@@ -10,6 +10,7 @@ import { Subheading } from '@/components/elements/subheading';
 import { Featured } from '@/components/products/featured';
 import { ProductItems } from '@/components/products/product-items';
 import fetchContentType from '@/lib/cms/fetchContentType';
+import { fetchMedusaProducts } from '@/lib/medusa/products';
 import { generateMetadataObject } from '@/lib/shared/metadata';
 
 export async function generateMetadata(props: {
@@ -47,7 +48,7 @@ export default async function Products(props: {
     },
     true
   );
-  const products = await fetchContentType('products');
+  const products = await fetchMedusaProducts();
 
   const localizedSlugs = productPage.localizations?.reduce(
     (acc: Record<string, string>, localization: any) => {
@@ -56,9 +57,7 @@ export default async function Products(props: {
     },
     { [params.locale]: 'products' }
   );
-  const featured = products?.data.filter(
-    (product: { featured: boolean }) => product.featured
-  );
+  const featured = products.slice(0, 3);
 
   return (
     <div className="relative overflow-hidden w-full">
@@ -75,7 +74,7 @@ export default async function Products(props: {
           {productPage.sub_heading}
         </Subheading>
         <Featured products={featured} locale={params.locale} />
-        <ProductItems products={products?.data} locale={params.locale} />
+        <ProductItems products={products} locale={params.locale} />
       </Container>
     </div>
   );

@@ -13,7 +13,7 @@ type CartContextType = {
   items: CartItem[];
   updateQuantity: (product: Product, quantity: number) => void;
   addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
+  removeFromCart: (productId: string) => void;
   clearCart: () => void;
   getCartTotal: () => number;
 };
@@ -41,7 +41,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   }, []);
 
-  const removeFromCart = useCallback((productId: number) => {
+  const removeFromCart = useCallback((productId: string) => {
     setItems((prevItems) =>
       prevItems.filter((item) => item.product.id !== productId)
     );

@@ -13,9 +13,15 @@ import {
 import { MediaImage } from '@/components/ui/media-image';
 import { useCart } from '@/context/cart-context';
 import { formatNumber } from '@/lib/utils';
+import { Product } from '@/types/types';
 
 export default function AddToCartModal({ onClick }: { onClick: () => void }) {
   const { items, updateQuantity, getCartTotal, removeFromCart } = useCart();
+  const currencySymbolFor = (product: Product) =>
+    product.currency_code?.toUpperCase() === 'EUR' ? '€' : '$';
+  const totalCurrencySymbol = items[0]
+    ? currencySymbolFor(items[0].product)
+    : '$';
   return (
     <Modal>
       <ModalTrigger onClick={onClick} className="mt-10 w-full">
@@ -70,7 +76,8 @@ export default function AddToCartModal({ onClick }: { onClick: () => void }) {
                     }}
                   />
                   <div className="text-black text-sm font-medium w-20">
-                    ${formatNumber(item.product.price)}
+                    {currencySymbolFor(item.product)}
+                    {formatNumber(item.product.price)}
                   </div>
                   <button onClick={() => removeFromCart(item.product.id)}>
                     <IconTrash className="w-4 h-4 text-neutral-900" />
@@ -83,7 +90,10 @@ export default function AddToCartModal({ onClick }: { onClick: () => void }) {
         <ModalFooter className="gap-4 items-center">
           <div className="text-neutral-700 ">
             total amount{' '}
-            <span className="font-bold">${formatNumber(getCartTotal())}</span>
+            <span className="font-bold">
+              {totalCurrencySymbol}
+              {formatNumber(getCartTotal())}
+            </span>
           </div>
           <button
             disabled={!items.length}
