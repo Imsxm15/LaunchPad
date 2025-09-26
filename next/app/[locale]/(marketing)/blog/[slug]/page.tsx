@@ -1,9 +1,9 @@
-import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import React from 'react';
 
 import ClientSlugHandler from '../../ClientSlugHandler';
 import { BlogLayout } from '@/components/blog-layout';
-import fetchContentType from '@/lib/strapi/fetchContentType';
+import { BlocksRenderer } from '@/components/ui/blocks-renderer';
+import fetchContentType from '@/lib/cms/fetchContentType';
 
 export default async function SingleArticlePage(props: {
   params: Promise<{ slug: string; locale: string }>;

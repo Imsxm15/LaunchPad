@@ -12,15 +12,6 @@ out/
 .turbo/
 coverage/
 
-# Strapi specific
-strapi/dist/
-strapi/build/
-strapi/public/uploads/
-strapi/database/
-strapi/types/generated/
-strapi/src/api/*/content-types/*/schema.json
-strapi/src/components/*/*.json
-
 # Next.js specific
 next/.next/
 next/out/

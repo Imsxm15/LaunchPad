@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { Heading } from '../elements/heading';
 import { Subheading } from '../elements/subheading';
-import { StrapiImage } from '@/components/ui/strapi-image';
+import { MediaImage } from '@/components/ui/media-image';
 
 export const Brands = ({
   heading,
@@ -75,7 +75,7 @@ export const Brands = ({
               key={logo.title || `logo-${idx}`}
               className="relative"
             >
-              <StrapiImage
+              <MediaImage
                 src={logo.image?.url}
                 alt={logo.image.alternativeText}
                 width={400}

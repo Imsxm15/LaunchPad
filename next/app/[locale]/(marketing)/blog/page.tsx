@@ -9,8 +9,8 @@ import { AmbientColor } from '@/components/decorations/ambient-color';
 import { FeatureIconContainer } from '@/components/dynamic-zone/features/feature-icon-container';
 import { Heading } from '@/components/elements/heading';
 import { Subheading } from '@/components/elements/subheading';
+import fetchContentType from '@/lib/cms/fetchContentType';
 import { generateMetadataObject } from '@/lib/shared/metadata';
-import fetchContentType from '@/lib/strapi/fetchContentType';
 import { Article } from '@/types/types';
 
 export async function generateMetadata(props: {

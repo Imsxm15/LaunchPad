@@ -5,15 +5,15 @@ import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 
 import AddToCartModal from '@/components/products/modal';
-import { StrapiImage } from '@/components/ui/strapi-image';
+import { MediaImage } from '@/components/ui/media-image';
 import { useCart } from '@/context/cart-context';
-import { strapiImage } from '@/lib/strapi/strapiImage';
+import { resolveMediaUrl } from '@/lib/cms/media';
 import { cn, formatNumber } from '@/lib/utils';
 import { Product } from '@/types/types';
 
 export const SingleProduct = ({ product }: { product: Product }) => {
   const [activeThumbnail, setActiveThumbnail] = useState(
-    strapiImage(product.images[0].url)
+    resolveMediaUrl(product.images[0].url)
   );
   const { addToCart } = useCart();
 
@@ -34,7 +34,7 @@ export const SingleProduct = ({ product }: { product: Product }) => {
               damping: 35,
             }}
           >
-            <StrapiImage
+            <MediaImage
               src={activeThumbnail}
               alt={product.name}
               width={600}
@@ -48,16 +48,16 @@ export const SingleProduct = ({ product }: { product: Product }) => {
             {product.images &&
               product.images.map((image, index) => (
                 <button
-                  onClick={() => setActiveThumbnail(strapiImage(image.url))}
+                  onClick={() => setActiveThumbnail(resolveMediaUrl(image.url))}
                   key={'product-image' + index}
                   className={cn(
                     'h-20 w-20 rounded-xl',
-                    activeThumbnail === image
+                    activeThumbnail === resolveMediaUrl(image.url)
                       ? 'border-2 border-neutral-200'
                       : 'border-2 border-transparent'
                   )}
                   style={{
-                    backgroundImage: `url(${strapiImage(image.url)})`,
+                    backgroundImage: `url(${resolveMediaUrl(image.url)})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',

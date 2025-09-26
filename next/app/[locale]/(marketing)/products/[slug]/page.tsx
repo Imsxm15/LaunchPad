@@ -5,8 +5,8 @@ import { Container } from '@/components/container';
 import { AmbientColor } from '@/components/decorations/ambient-color';
 import DynamicZoneManager from '@/components/dynamic-zone/manager';
 import { SingleProduct } from '@/components/products/single-product';
+import fetchContentType from '@/lib/cms/fetchContentType';
 import { generateMetadataObject } from '@/lib/shared/metadata';
-import fetchContentType from '@/lib/strapi/fetchContentType';
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string; slug: string }>;

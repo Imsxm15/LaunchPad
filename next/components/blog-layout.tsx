@@ -4,7 +4,7 @@ import { Link } from 'next-view-transitions';
 
 import { Container } from './container';
 import DynamicZoneManager from './dynamic-zone/manager';
-import { StrapiImage } from '@/components/ui/strapi-image';
+import { MediaImage } from '@/components/ui/media-image';
 import { Article } from '@/types/types';
 
 export async function BlogLayout({
@@ -26,7 +26,7 @@ export async function BlogLayout({
       </div>
       <div className="w-full mx-auto">
         {article?.image ? (
-          <StrapiImage
+          <MediaImage
             src={article.image.url}
             height={800}
             width={800}
