@@ -2,6 +2,7 @@ node_modules
 .DS_Store
 .vscode
 .env
+!apps/medusa/.env
 .claude/settings.local.json
 .pnp.*
 .yarn/*
