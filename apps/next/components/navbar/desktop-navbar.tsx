@@ -7,12 +7,14 @@ import {
   useScroll,
 } from 'framer-motion';
 import { Link } from 'next-view-transitions';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useMemo, useState } from 'react';
 
 import { LocaleSwitcher } from '../locale-switcher';
 import { NavbarItem } from './navbar-item';
 import { Button } from '@/components/elements/button';
 import { Logo } from '@/components/logo';
+import { useAuth } from '@/context/auth-context';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -39,6 +41,37 @@ export const DesktopNavbar = ({
   const { scrollY } = useScroll();
 
   const [showBackground, setShowBackground] = useState(false);
+  const router = useRouter();
+  const { customer, logout } = useAuth();
+
+  const displayName = useMemo(() => {
+    if (!customer) {
+      return '';
+    }
+
+    const fullName = `${customer.first_name ?? ''} ${customer.last_name ?? ''}`
+      .trim()
+      .replace(/\s+/g, ' ');
+
+    return fullName.length ? fullName : customer.email;
+  }, [customer]);
+
+  const secondaryLine = useMemo(() => {
+    if (!customer) {
+      return '';
+    }
+
+    if (!customer.email) {
+      return '';
+    }
+
+    return displayName !== customer.email ? customer.email : '';
+  }, [customer, displayName]);
+
+  const handleLogout = async () => {
+    await logout();
+    router.push(`/${locale}`);
+  };
 
   useMotionValueEvent(scrollY, 'change', (value) => {
     if (value > 100) {
@@ -90,18 +123,34 @@ export const DesktopNavbar = ({
       <div className="flex space-x-2 items-center">
         <LocaleSwitcher currentLocale={locale} />
 
-        {rightNavbarItems.map((item, index) => (
-          <Button
-            key={item.text}
-            variant={
-              index === rightNavbarItems.length - 1 ? 'primary' : 'simple'
-            }
-            as={Link}
-            href={`/${locale}${item.URL}`}
-          >
-            {item.text}
-          </Button>
-        ))}
+        {customer ? (
+          <div className="flex items-center gap-3">
+            <div className="flex flex-col items-end leading-tight">
+              <span className="text-sm font-semibold text-white">
+                {displayName}
+              </span>
+              {secondaryLine ? (
+                <span className="text-xs text-neutral-400">{secondaryLine}</span>
+              ) : null}
+            </div>
+            <Button variant="simple" onClick={handleLogout}>
+              Se déconnecter
+            </Button>
+          </div>
+        ) : (
+          rightNavbarItems.map((item, index) => (
+            <Button
+              key={item.text}
+              variant={
+                index === rightNavbarItems.length - 1 ? 'primary' : 'simple'
+              }
+              as={Link}
+              href={`/${locale}${item.URL}`}
+            >
+              {item.text}
+            </Button>
+          ))
+        )}
       </div>
     </motion.div>
   );
