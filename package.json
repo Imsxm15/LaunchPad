@@ -1,57 +1,25 @@
 {
-  "name": "launchpad-next-demo",
+  "name": "launchpad-frontend",
   "version": "1.0.0",
   "private": true,
-  "description": "LaunchPad monorepo housing Next.js front-end and Medusa backend applications.",
+  "description": "Autonomous React frontend for LaunchPad powered by a remote Medusa backend.",
   "type": "module",
-  "workspaces": [
-    "apps/*"
-  ],
   "scripts": {
-    "prepare": "husky",
-    "predev": "node --loader ts-node/esm scripts/check-node-version.mts",
-    "prebuild": "node --loader ts-node/esm scripts/check-node-version.mts",
-    "prestart": "node --loader ts-node/esm scripts/check-node-version.mts",
-    "dev": "concurrently \"yarn dev:next\" \"yarn dev:medusa\" --names \"next,medusa\" --prefix-colors \"blue,green\"",
-    "dev:next": "yarn workspace nextjs dev",
-    "dev:medusa": "yarn workspace medusa-starter-default dev",
-    "build": "yarn build:medusa && yarn build:next",
-    "build:next": "yarn workspace nextjs build",
-    "build:medusa": "yarn workspace medusa-starter-default build",
-    "start": "concurrently \"yarn start:next\" \"yarn start:medusa\" --names \"next,medusa\" --prefix-colors \"blue,green\"",
-    "start:next": "yarn workspace nextjs start",
-    "start:medusa": "yarn workspace medusa-starter-default start",
-    "setup:next": "node --loader ts-node/esm scripts/copy-env.mts apps/next",
-    "setup:medusa": "echo 'Medusa dependencies installed from root'",
-    "setup": "yarn install && yarn setup:next && yarn setup:medusa",
-    "repo:upstream": "git fetch upstream && git merge upstream/main",
-    "check:format": "prettier . --check --cache",
-    "fix:format": "prettier . --write --cache",
-    "fix": "yarn fix:format",
-    "lint-staged": "lint-staged"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@types/node": "^22.5.2",
-    "typescript": "^5.0.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.2.10",
-    "prettier": "^3.5.3",
-    "ts-node": "^10.9.2"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,md,yml,yaml}": [
-      "yarn fix:format"
-    ],
-    "apps/next/**/*.{js,jsx,ts,tsx}": [
-      "cd apps/next && yarn lint --fix"
-    ]
-  },
-  "engines": {
-    "node": ">=20.0.0",
-    "yarn": ">=4.0.0"
-  },
-  "packageManager": "yarn@4.5.0"
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.2",
+    "@vitejs/plugin-react": "^4.3.2",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "vite": "^5.4.10"
+  }
 }

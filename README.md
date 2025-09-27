@@ -1,91 +1,67 @@
-# LaunchPad Monorepo
+# LaunchPad Frontend
 
 ![LaunchPad](./LaunchPad.jpg)
 
-This repository now contains a full-stack LaunchPad setup that combines the marketing storefront built with Next.js and a MedusaJS commerce backend. Both applications live side-by-side in a Yarn workspaces monorepo for a streamlined developer experience.
+LaunchPad is now a lightweight React storefront powered by Vite. The application consumes the hosted Medusa backend at
+[`https://medusa-backend-c7b2.onrender.com`](https://medusa-backend-c7b2.onrender.com), allowing you to explore the product
+catalog without maintaining local infrastructure.
 
 ## 🚀 Getting started
 
 ### Prerequisites
 
-- **Node.js 20+** (required)
-- **Yarn 4+** (required)
-
-You can use [nvm](https://github.com/nvm-sh/nvm) to manage Node versions:
-```bash
-nvm use
-```
+- **Node.js 18+**
+- **npm 9+**
 
 ### Installation
 
-1. **Clone the repository**
+```bash
+npm install
+```
 
-   ```bash
-   git clone https://github.com/Imsxm15/LaunchPad.git
-   cd LaunchPad
+### Development server
+
+1. Create a `.env` file in the project root (already provided) and ensure the Medusa backend URL is correct:
+
+   ```env
+   VITE_MEDUSA_BACKEND_URL=https://medusa-backend-c7b2.onrender.com
    ```
 
-2. **Install dependencies**
+2. Start the Vite development server:
 
    ```bash
-   yarn install
-   yarn setup
+   npm run dev
    ```
 
-   The `setup` script installs every workspace, prepares the Next.js environment variables, and downloads the Medusa dependencies.
+   The site is available at [http://localhost:5173](http://localhost:5173).
 
-3. **Configure environment variables**
-   Update `apps/next/.env` with the URL of the API you want the storefront to consume:
+### Production build
 
-   ```bash
-   NEXT_PUBLIC_API_URL="https://your-api.example.com/"
-   ```
-
-   Update `apps/medusa/.env` with the credentials of your PostgreSQL database and any additional secrets:
-
-   ```bash
-   DATABASE_URL="postgres://USER:PASSWORD@localhost:5432/medusa"
-   ```
-
-4. **Start the development servers**
-
-   Start the storefront:
-
-   ```bash
-   yarn dev:next
-   ```
-
-   Start the Medusa backend:
-
-   ```bash
-   yarn dev:medusa
-   ```
-
-5. **Build for production**
-
-   ```bash
-   yarn build:next
-   yarn build:medusa
-   ```
-
-   Refer to the Medusa documentation for deployment instructions and running migrations against your PostgreSQL instance.
+```bash
+npm run build
+npm run preview
+```
 
 ## 📁 Project structure
 
 ```
 .
-├── apps/
-│   ├── medusa/     # MedusaJS backend (PostgreSQL by default)
-│   └── next/       # Next.js storefront
-├── scripts/        # Utility scripts (env bootstrapper)
-├── README.md       # You are here
-└── package.json    # Workspace utilities and shared tooling
+├── src/
+│   ├── App.jsx
+│   ├── main.jsx
+│   ├── services/
+│   │   └── medusa.js
+│   └── styles/
+│       └── global.css
+├── index.html
+├── package.json
+├── vite.config.js
+└── .env
 ```
 
-## 🧪 Recommended checks
+## 🧠 Key concepts
 
-- `yarn lint` inside `apps/next/` ensures the application meets the linting rules.
-- `yarn build` inside `apps/next/` validates the production build.
-- `yarn dev:medusa` inside the repository root runs the Medusa backend in development mode.
+- `src/services/medusa.js` centralizes API calls to the remote Medusa backend.
+- `VITE_MEDUSA_BACKEND_URL` controls which backend instance the storefront consumes.
 
-Feel free to connect the storefront to your own API layer or integrate it with the commerce platform of your choice.
+Feel free to customize the UI, expand the product views, or connect to your own Medusa deployment.
